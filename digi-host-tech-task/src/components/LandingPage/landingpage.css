@@ -1,0 +1,99 @@
+.searchBtn {
+  height: fit-content;
+}
+
+.myBox {
+  background-color: rgb(255, 255, 255);
+  border-radius: 12px;
+}
+
+.myBoxInfo {
+  background-color: rgba(51, 134, 51, 0.199) !important;
+  border-radius: 12px;
+}
+.myCardData small {
+  /* background-color: aqua; */
+  /* font-size: 10px; */
+}
+
+.newsLetterCol {
+  margin-top: 12rem !important;
+  background-color: rgba(41, 182, 201, 0.87);
+  border-radius: 16px;
+  padding: 6rem 4rem !important;
+  color: aliceblue;
+}
+.ladyImgdiv {
+  top: -39%;
+  right: -10%;
+}
+
+.inputBtn input {
+  margin-top: 1rem;
+  padding: 8px 0px;
+  outline: none;
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+  border: 1px solid black;
+  padding-left: 8px;
+  border-right: none;
+}
+.inputBtn button {
+  padding: 8px 12px;
+  outline: none;
+  border: 1px solid black;
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+  background-color: rgb(255, 136, 0);
+  width: inherit;
+  height: 40px;
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+}
+.myFooterRow ul {
+  list-style-type: none;
+}
+
+.myFooterRow a {
+  text-decoration: none;
+  color: gray;
+  margin: 14px 0px !important;
+}
+.myFooterRow a:not(:first-child) {
+  text-decoration: none;
+  color: black !important;
+  margin: 14px 0px !important;
+}
+.myFooterRow ul li:first-child {
+  font-weight: 800;
+  font-size: 18px;
+  padding-bottom: 29px;
+}
+
+.myFooterRow ul li {
+  padding: 10px 0px;
+}
+.myNewsLettertext {
+  width: 75%;
+}
+
+@media only screen and (max-width: 777px) {
+  .newsLetterCol {
+    padding: 10px 10px !important;
+  }
+  .inputBtn {
+    width: inherit;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+  }
+  .inputBtn button {
+    height: 40px;
+    border-radius: none;
+  }
+  .myNewsLettertext {
+    width: 100%;
+  }
+}

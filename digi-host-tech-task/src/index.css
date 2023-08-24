@@ -1,0 +1,21 @@
+body {
+  /* background-color: aliceblue !important; */
+}
+* {
+  /* border: 1px solid black; */
+}
+.themeColor {
+  background-color: rgba(51, 134, 51, 0.699) !important;
+  color: white !important;
+}
+.myColor {
+  color: rgba(51, 134, 51, 0.699) !important;
+}
+
+li {
+  padding: 0px 12px;
+}
+
+.myInput {
+  border: 1px solid rgba(51, 134, 51, 0.699) !important;
+}
