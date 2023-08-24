@@ -4,7 +4,7 @@ import Farms from '../Farms/Farms';
 import Pools from '../Pools/Pools';
 import LiquidStaking from '../LiquidStaking/LiquidStaking';
 export default function Tabs() {
-  const [activeTab, setActiveTab] = useState(1);
+  const [activeTab, setActiveTab] = useState(2);
   return (
     <>
       <div className="container pt-2">

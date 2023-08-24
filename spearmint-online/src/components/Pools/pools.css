@@ -9,6 +9,8 @@
   color: #9a6aff;
 }
 .pool-sub-heading{
-    font-weight: 700;
-    font-family: 'Kanit', sans-serif;
-}
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.1;
+color: #f4eeff;
+  }
