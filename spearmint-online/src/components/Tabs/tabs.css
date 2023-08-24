@@ -1,0 +1,11 @@
+.myTab {
+  border: none;
+  background-color: transparent;
+  color: #b8add2;
+}
+.myActiveTab {
+  color: #9a6aff !important;
+  font-weight: 500;
+  border-bottom: 4px solid #1fc7d4;
+  padding-bottom: 5px;
+}
