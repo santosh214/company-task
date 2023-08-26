@@ -1,5 +1,8 @@
+p{
+  margin-bottom: 0px !important;
+}
 .poolRow {
-    padding: 20px 0px;
+  padding: 20px 0px;
   background: linear-gradient(139.73deg, #313d5c, #3d2a54);
 }
 .pool-heading {
@@ -8,9 +11,37 @@
   line-height: 1.1;
   color: #9a6aff;
 }
-.pool-sub-heading{
+.pool-sub-heading {
   font-size: 20px;
   font-weight: 600;
   line-height: 1.1;
-color: #f4eeff;
-  }
+  color: #f4eeff;
+}
+
+.poolMainSection{
+  background-color: black;
+}
+.rowColor{
+  background-color: #27262c;
+
+}
+.rowColor:first-child{
+  border-top-right-radius: 12px;
+  border-top-left-radius: 12px;
+  border-bottom: 2px solid #524b63;
+}
+.rowColor:last-child{
+  border-bottom-right-radius: 12px;
+  border-bottom-left-radius: 12px;
+}
+.nftName{
+  font-size: 16px;
+  font-weight: 600;
+}
+.nftNameDetails {
+font-size: 12px;
+}
+.rowHeading{
+  font-size: 12px;
+  color: #b8add2;
+}

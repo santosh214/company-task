@@ -6,7 +6,7 @@ import LiquidStaking from '../LiquidStaking/LiquidStaking';
 export default function Tabs() {
   const [activeTab, setActiveTab] = useState(2);
   return (
-    <>
+    <section className='tabSection'>
       <div className="container pt-2">
         <div className="row d-flex justify-content-center">
           <div className="col-1 ">
@@ -40,6 +40,6 @@ export default function Tabs() {
         {activeTab === 2 ? <Pools /> : ''}
         {activeTab === 3 ? <LiquidStaking /> : ''}
       </>
-    </>
+    </section>
   );
 }

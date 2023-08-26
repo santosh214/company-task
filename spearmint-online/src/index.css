@@ -2,7 +2,8 @@ body {
   margin: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #27262c !important;
+  /* background-color: #27262c !important; */
+  background-color: #000 !important;
   color: #f4eeff !important;
 }
 *{
