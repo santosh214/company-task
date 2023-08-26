@@ -46,7 +46,14 @@ font-size: 12px;
   color: #b8add2;
 }
 
-/* modal  */
-.modal-content{
-  background-color: black !important;
+
+.stakeBtn{
+border: 1px solid wheat;
+width: fit-content;
+padding: 4px 20px;
+border-radius: 12px;
+
+}
+.stakeBtn:hover{
+  margin-top: 2px;
 }

@@ -10,7 +10,7 @@ export default function Pools() {
   const [{wallet, connecting}, connect, disconnect] = useConnectWallet();
   console.log('🚀 ~ Pools ~ wallet', wallet)
   const [address,setAddress]=useState(wallet?.accounts[0]?.address)
-  const [loader, setLoader] = useState(-1);
+  const [loader, setLoader] = useState(1);
   const data = [
     {
       name: 'Stake cake',
@@ -122,16 +122,18 @@ export default function Pools() {
                   <p>{e.endTime} days</p>
                 </div>
 
-                <div className="col-2">
+                <div className="col-2 d-inline-block justify-content-center ">
                   {loader==i ? (
-                    <div class="spinner-border text-primary" role="status">
+                    <div class="spinner-border text-primary ml-3" role="status">
                       <span class="visually-hidden">Loading...</span>
                     </div>
                   ) : (
                     <p
                       style={{
-                        cursor: 'pointer'
+                        cursor: 'pointer',
+                        textAlign:'center'
                       }}
+                      className='stakeBtn d-inline-block justify-content-center text-center'
                       onClick={()=>handleStake(i)}
                     >
                       Stake
