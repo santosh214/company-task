@@ -8,7 +8,7 @@ import injectedModule from '@web3-onboard/injected-wallets';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-toastify/dist/ReactToastify.css';
 import { BrowserRouter } from 'react-router-dom';
-
+import 'bootstrap/dist/js/bootstrap'
 
 const injected = injectedModule();
 
