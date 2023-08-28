@@ -5,12 +5,14 @@ import {Contract, ethers} from 'ethers';
 import {useConnectWallet} from '@web3-onboard/react';
 import {wait} from '@testing-library/user-event/dist/utils';
 import {ToastContainer, toast} from 'react-toastify';
+import { tokenAbi, tokenAddress } from '../contract/Token';
 
 export default function Pools() {
   const [{wallet, connecting}, connect, disconnect] = useConnectWallet();
   console.log('🚀 ~ Pools ~ wallet', wallet);
   const [address, setAddress] = useState(wallet?.accounts[0]?.address);
   const [loader, setLoader] = useState(-1);
+  const [buttonStatus,setButtonStatus]=useState('approve')
   const data = [
     {
       name: 'Stake cake',
@@ -42,30 +44,68 @@ export default function Pools() {
     stakingAbi,
     etherSigner
   );
+  const tokenContractInst = new ethers.Contract(
+    tokenAddress,
+    tokenAbi,
+    etherSigner
+  );
   useEffect(() => {
     setAddress(wallet?.accounts[0]?.address);
     return () => {};
   }, [wallet?.accounts[0]?.address]);
 
+
+  const handleApprove=async(num)=>{
+    if (!address) {
+      return toast.error('please connect wallet first!');
+    }
+    try {
+      setLoader(num);
+
+
+      const amount=1*10**18
+      const _approve=await tokenContractInst.approve(stakingContractAddr,amount.toString())
+      console.log('chekc', stakingContractInst);
+      const tokenwait=await _approve.wait()
+      if(tokenwait){
+        setLoader(-1)
+      setButtonStatus('stake')
+        return  toast.success("Approve success!")
+
+      }
+        
+    } catch (error) {
+      setLoader(-1)
+      setButtonStatus('approve')
+      console.log('🚀 ~ handleApprove ~ error', error)
+      
+    }
+
+  }
   const handleStake = async (num) => {
     if (!address) {
       return toast.error('please connect wallet first!');
     }
     try {
       setLoader(num);
-      console.log('chekc', stakingContractInst);
+    
       let _amount = 1;
       let amountInBigNum = _amount * 10 ** 18;
       console.log('🚀 ~ handleStake ~ amountInBigNum', amountInBigNum);
 
-      console.log('🚀 ~ handleStake ~ stakingContractInst', stakingContractInst)
+      console.log(
+        '🚀 ~ handleStake ~ stakingContractInst',
+        stakingContractInst
+      );
+
       let _stake = await stakingContractInst?.deposit(_amount);
       let _wait = await _stake.wait();
-      if (wait) {
+      if (_wait) {
+        setButtonStatus('approve')
+
         setLoader(-1);
         toast.success('Transaction done!');
       }
-      console.log('🚀 ~ handleStake ~ _wait', _wait);
     } catch (error) {
       let _pa = JSON.stringify(error);
       let _aa = JSON.parse(_pa);
@@ -77,6 +117,7 @@ export default function Pools() {
       }
       setLoader(-1);
       console.log('🚀 ~ handleStake ~ error', error);
+      setButtonStatus('stake')
     }
   };
 
@@ -137,6 +178,19 @@ export default function Pools() {
                         <span class="visually-hidden">Loading...</span>
                       </div>
                     ) : (
+                      <>
+                      {buttonStatus ==='approve'?
+                      <p
+                      style={{
+                        cursor: 'pointer',
+                        textAlign: 'center'
+                      }}
+                      className="stakeBtn d-inline-block justify-content-center text-center"
+                      onClick={() => handleApprove(i)}
+                    >
+                      Approve
+                    </p>:                      
+                    
                       <p
                         style={{
                           cursor: 'pointer',
@@ -147,6 +201,9 @@ export default function Pools() {
                       >
                         Stake
                       </p>
+            }
+                    </>
+
                     )}
                   </div>
                 </div>
