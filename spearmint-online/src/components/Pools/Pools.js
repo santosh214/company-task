@@ -5,14 +5,16 @@ import {Contract, ethers} from 'ethers';
 import {useConnectWallet} from '@web3-onboard/react';
 import {wait} from '@testing-library/user-event/dist/utils';
 import {ToastContainer, toast} from 'react-toastify';
-import { tokenAbi, tokenAddress } from '../contract/Token';
+import {tokenAbi, tokenAddress} from '../contract/Token';
 
 export default function Pools() {
+  const myStakeAmount = 1 * 10 ** 18;
   const [{wallet, connecting}, connect, disconnect] = useConnectWallet();
   console.log('🚀 ~ Pools ~ wallet', wallet);
   const [address, setAddress] = useState(wallet?.accounts[0]?.address);
   const [loader, setLoader] = useState(-1);
-  const [buttonStatus,setButtonStatus]=useState('approve')
+  const [buttonStatus, setButtonStatus] = useState('approve');
+  const[currentRow,setCurrentRow]=useState(-1)
   const data = [
     {
       name: 'Stake cake',
@@ -54,43 +56,54 @@ export default function Pools() {
     return () => {};
   }, [wallet?.accounts[0]?.address]);
 
-
-  const handleApprove=async(num)=>{
+  const test = async () => {
+    try {
+      console.log('🚀 ~ test ~ stakingContractInst', stakingContractInst);
+      console.log('🚀 ~ test ~ address', address);
+      let val = await stakingContractInst.userInfo(address);
+      console.log('val', val);
+    } catch (error) {
+      console.log('🚀 ~ test ~ error', error);
+    }
+  };
+  const handleApprove = async (num) => {
     if (!address) {
       return toast.error('please connect wallet first!');
     }
     try {
+      setCurrentRow(num)
       setLoader(num);
 
-
-      const amount=1*10**18
-      const _approve=await tokenContractInst.approve(stakingContractAddr,amount.toString())
+      const amount = myStakeAmount;
+      // const _approve=await tokenContractInst.increaseAllowance(address,amount.toString())
+      const _approvee = await tokenContractInst.approve(
+        stakingContractAddr,
+        amount.toString()
+      );
       console.log('chekc', stakingContractInst);
-      const tokenwait=await _approve.wait()
-      if(tokenwait){
-        setLoader(-1)
-      setButtonStatus('stake')
-        return  toast.success("Approve success!")
-
+      const tokenwait = await _approvee.wait();
+      if (tokenwait) {
+        setLoader(-1);
+        setButtonStatus('stake');
+        return toast.success('Approve success!');
       }
-        
     } catch (error) {
-      setLoader(-1)
-      setButtonStatus('approve')
-      console.log('🚀 ~ handleApprove ~ error', error)
-      
+      setLoader(-1);
+      setButtonStatus('approve');
+      console.log('🚀 ~ handleApprove ~ error', error);
     }
-
-  }
+  };
   const handleStake = async (num) => {
     if (!address) {
       return toast.error('please connect wallet first!');
     }
     try {
       setLoader(num);
-    
-      let _amount = 1;
-      let amountInBigNum = _amount * 10 ** 18;
+      setCurrentRow(num)
+
+
+      let _amount = myStakeAmount;
+      let amountInBigNum = 1;
       console.log('🚀 ~ handleStake ~ amountInBigNum', amountInBigNum);
 
       console.log(
@@ -98,10 +111,10 @@ export default function Pools() {
         stakingContractInst
       );
 
-      let _stake = await stakingContractInst?.deposit(_amount);
+      let _stake = await stakingContractInst?.deposit(_amount?.toString());
       let _wait = await _stake.wait();
       if (_wait) {
-        setButtonStatus('approve')
+        setButtonStatus('approve');
 
         setLoader(-1);
         toast.success('Transaction done!');
@@ -117,12 +130,13 @@ export default function Pools() {
       }
       setLoader(-1);
       console.log('🚀 ~ handleStake ~ error', error);
-      setButtonStatus('stake')
+      // setButtonStatus('stake')
     }
   };
 
   return (
     <>
+      <button onClick={test}>click</button>
       <ToastContainer />
       <section className="poolMainSection">
         <div className="container-fluid">
@@ -169,6 +183,7 @@ export default function Pools() {
                     <p>{e.endTime} days</p>
                   </div>
 
+
                   <div className="col-2 d-inline-block justify-content-center ">
                     {loader == i ? (
                       <div
@@ -178,32 +193,42 @@ export default function Pools() {
                         <span class="visually-hidden">Loading...</span>
                       </div>
                     ) : (
-                      <>
-                      {buttonStatus ==='approve'?
-                      <p
-                      style={{
-                        cursor: 'pointer',
-                        textAlign: 'center'
-                      }}
-                      className="stakeBtn d-inline-block justify-content-center text-center"
-                      onClick={() => handleApprove(i)}
-                    >
-                      Approve
-                    </p>:                      
-                    
-                      <p
-                        style={{
-                          cursor: 'pointer',
-                          textAlign: 'center'
-                        }}
-                        className="stakeBtn d-inline-block justify-content-center text-center"
-                        onClick={() => handleStake(i)}
-                      >
-                        Stake
-                      </p>
-            }
-                    </>
 
+                      <>
+                      {console.log("current row",currentRow)}
+{console.log("current row ii",currentRow==i)}
+{console.log("current buttonStatus ii",buttonStatus)}
+                        {buttonStatus === 'stake' && currentRow==i ? (
+                          <>
+
+                          <p
+                            style={{
+                              cursor: 'pointer',
+                              textAlign: 'center'
+                            }}
+                            className="stakeBtn d-inline-block justify-content-center text-center"
+                            onClick={() => handleStake(i)}
+                          >
+                            Stake
+                          </p>
+                          </>
+                        ) : (
+                          <>
+
+<p
+                            style={{
+                              cursor: 'pointer',
+                              textAlign: 'center'
+                            }}
+                            className="stakeBtn d-inline-block justify-content-center text-center"
+                            onClick={() => handleApprove(i)}
+                          >
+                            Approve
+                          </p>
+
+                          </>
+                        )}
+                      </>
                     )}
                   </div>
                 </div>

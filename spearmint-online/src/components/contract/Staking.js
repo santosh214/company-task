@@ -1,4 +1,4 @@
-export const stakingContractAddr = '0x571f830C36EAFAe5d11654211636291fa0e460A9';
+export const stakingContractAddr = '0x45c54210128a065de780C4B0Df3d16664f7f859e';
 export const stakingAbi = [
   {inputs: [], stateMutability: 'nonpayable', type: 'constructor'},
   {
