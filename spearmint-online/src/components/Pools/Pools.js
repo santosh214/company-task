@@ -136,7 +136,7 @@ export default function Pools() {
 
   return (
     <>
-      <button onClick={test}>click</button>
+      {/* <button onClick={test}>click</button> */}
       <ToastContainer />
       <section className="poolMainSection">
         <div className="container-fluid">
