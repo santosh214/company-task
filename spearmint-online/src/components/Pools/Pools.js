@@ -14,7 +14,11 @@ export default function Pools() {
   const [address, setAddress] = useState(wallet?.accounts[0]?.address);
   const [loader, setLoader] = useState(-1);
   const [buttonStatus, setButtonStatus] = useState('approve');
-  const[currentRow,setCurrentRow]=useState(-1)
+  const [currentRow, setCurrentRow] = useState(-1);
+  const [showUserData, setShowUserData] = useState({
+    amount: '',
+    rewardDebt: ''
+  });
   const data = [
     {
       name: 'Stake cake',
@@ -57,11 +61,20 @@ export default function Pools() {
   }, [wallet?.accounts[0]?.address]);
 
   const test = async () => {
+    if(!address){
+      return toast.error("connect Wallet first")
+    }
     try {
+
       console.log('🚀 ~ test ~ stakingContractInst', stakingContractInst);
       console.log('🚀 ~ test ~ address', address);
       let val = await stakingContractInst.userInfo(address);
-      console.log('val', val);
+      console.log('val', val?.amount.toString() / 10 ** 18);
+      console.log('val', val?.rewardDebt.toString() / 10 ** 18);
+      setShowUserData({
+        amount: val?.amount.toString() / 10 ** 18,
+        rewardDebt: val?.amount.toString() / 10 ** 18
+      });
     } catch (error) {
       console.log('🚀 ~ test ~ error', error);
     }
@@ -71,7 +84,7 @@ export default function Pools() {
       return toast.error('please connect wallet first!');
     }
     try {
-      setCurrentRow(num)
+      setCurrentRow(num);
       setLoader(num);
 
       const amount = myStakeAmount;
@@ -99,12 +112,11 @@ export default function Pools() {
     }
     try {
       setLoader(num);
-      setCurrentRow(num)
-
+      setCurrentRow(num);
 
       let _amount = myStakeAmount;
-      let amountInBigNum = 1;
-      console.log('🚀 ~ handleStake ~ amountInBigNum', amountInBigNum);
+      // let amountInBigNum = 1;
+      // console.log('🚀 ~ handleStake ~ amountInBigNum', amountInBigNum);
 
       console.log(
         '🚀 ~ handleStake ~ stakingContractInst',
@@ -118,6 +130,7 @@ export default function Pools() {
 
         setLoader(-1);
         toast.success('Transaction done!');
+        test()
       }
     } catch (error) {
       let _pa = JSON.stringify(error);
@@ -133,10 +146,23 @@ export default function Pools() {
       // setButtonStatus('stake')
     }
   };
+  useEffect(() => {
+    
+    if(address){
+
+      test()
+    }
+    return () => {
+      
+    }
+  }, [address])
+  
 
   return (
     <>
-      {/* <button onClick={test}>click</button> */}
+      {/* <button onClick={test} className="btn btn-success">
+        click
+      </button> */}
       <ToastContainer />
       <section className="poolMainSection">
         <div className="container-fluid">
@@ -150,7 +176,7 @@ export default function Pools() {
             </div>
           </div>
         </div>
-        <section className="pt-3 mb-3">
+        <section className="pt-3 pb-3">
           <div className="container ">
             {data.map((e, i) => {
               return (
@@ -183,7 +209,6 @@ export default function Pools() {
                     <p>{e.endTime} days</p>
                   </div>
 
-
                   <div className="col-2 d-inline-block justify-content-center ">
                     {loader == i ? (
                       <div
@@ -193,39 +218,35 @@ export default function Pools() {
                         <span class="visually-hidden">Loading...</span>
                       </div>
                     ) : (
-
                       <>
-                      {console.log("current row",currentRow)}
-{console.log("current row ii",currentRow==i)}
-{console.log("current buttonStatus ii",buttonStatus)}
-                        {buttonStatus === 'stake' && currentRow==i ? (
+                        {console.log('current row', currentRow)}
+                        {console.log('current row ii', currentRow == i)}
+                        {console.log('current buttonStatus ii', buttonStatus)}
+                        {buttonStatus === 'stake' && currentRow == i ? (
                           <>
-
-                          <p
-                            style={{
-                              cursor: 'pointer',
-                              textAlign: 'center'
-                            }}
-                            className="stakeBtn d-inline-block justify-content-center text-center"
-                            onClick={() => handleStake(i)}
-                          >
-                            Stake
-                          </p>
+                            <p
+                              style={{
+                                cursor: 'pointer',
+                                textAlign: 'center'
+                              }}
+                              className="stakeBtn d-inline-block justify-content-center text-center"
+                              onClick={() => handleStake(i)}
+                            >
+                              Stake
+                            </p>
                           </>
                         ) : (
                           <>
-
-<p
-                            style={{
-                              cursor: 'pointer',
-                              textAlign: 'center'
-                            }}
-                            className="stakeBtn d-inline-block justify-content-center text-center"
-                            onClick={() => handleApprove(i)}
-                          >
-                            Approve
-                          </p>
-
+                            <p
+                              style={{
+                                cursor: 'pointer',
+                                textAlign: 'center'
+                              }}
+                              className="stakeBtn d-inline-block justify-content-center text-center"
+                              onClick={() => handleApprove(i)}
+                            >
+                              Approve
+                            </p>
                           </>
                         )}
                       </>
@@ -237,6 +258,14 @@ export default function Pools() {
           </div>
         </section>
       </section>
+      <div className=" myDiv2">
+        <span className="text-center d-flex justify-content-center">
+          User Data Amount : {showUserData?.amount}
+          <br />
+          Reward : {showUserData?.rewardDebt}
+        </span>
+      </div>
     </>
   );
 }
+
